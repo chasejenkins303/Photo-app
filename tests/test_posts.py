@@ -270,14 +270,14 @@ if __name__ == '__main__':
         TestPostListEndpoint('test_posts_get_bad_limit_argument_handled'),  # get (list view)
         TestPostListEndpoint('test_posts_get_is_authorized'),               # get (list view)
 
-        # TestPostListEndpoint('test_post_post'),                             # post (create)
-        # TestPostListEndpoint('test_post_post_image_only'),                  # post (create)
-        # TestPostListEndpoint('test_post_post_bad_data_400_error'),          # post (create)
+        TestPostListEndpoint('test_post_post'),                             # post (create)
+        TestPostListEndpoint('test_post_post_image_only'),                  # post (create)
+        TestPostListEndpoint('test_post_post_bad_data_400_error'),          # post (create)
 
         # # Detail Endpoint Tests
-        # TestPostDetailEndpoint('test_post_patch_correct_data_200'),                          # patch (update)
-        # TestPostDetailEndpoint('test_post_patch_blanks_not_overwritten'),   # patch (update)
-        # TestPostDetailEndpoint('test_post_patch_invalid_id_404'),           # patch (update)
+        TestPostDetailEndpoint('test_post_patch_correct_data_200'),                          # patch (update)
+        TestPostDetailEndpoint('test_post_patch_blanks_not_overwritten'),   # patch (update)
+        TestPostDetailEndpoint('test_post_patch_invalid_id_404'),           # patch (update)
         # TestPostDetailEndpoint('test_post_patch_id_does_not_exist_404'),    # patch (update)
         # TestPostDetailEndpoint('test_post_patch_unauthorized_id_404'),      # patch (update)
         

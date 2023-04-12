@@ -60,15 +60,15 @@ if __name__ == '__main__':
             TestPostDetailEndpoint('test_post_get_unauthorized_id_404'),
 
             # Profile GET Tests:
-            # TestProfileEndpoint('test_profile_get_check_if_query_correct'),
+            TestProfileEndpoint('test_profile_get_check_if_query_correct'),
 
             # Stories GET (List) Tests:
             TestStoryListEndpoint('test_stories_get_check_if_query_correct'),                       
             TestStoryListEndpoint('test_stories_get_check_data_structure'),
 
             # Suggestions GET (List) Tests:
-            # TestSuggestionsEndpoint('test_suggestions_get_check_if_query_correct'),
-            # TestSuggestionsEndpoint('test_suggestions_get_check_if_data_structure_correct')
+            TestSuggestionsEndpoint('test_suggestions_get_check_if_query_correct'),
+            TestSuggestionsEndpoint('test_suggestions_get_check_if_data_structure_correct')
                 
         ])
         unittest.TextTestRunner(verbosity=verbosity_level).run(suite)

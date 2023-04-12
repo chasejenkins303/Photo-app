@@ -12,14 +12,9 @@ class SuggestionsListEndpoint(Resource):
     def get(self):
         # suggestions should be any user with an ID that's not in this list:
         # print(get_authorized_user_ids(self.current_user))
-        not_following = Following.query.filter(~Following.user_id.in_([self.current_user.id]))#=self.current_user.id).all()
-        #building list of friends usernames
-        friend_ids=[]
-        for rec in not_following:
-            friend_ids.append(rec.following_id)
-        friend_ids.append(self.current_user.id)
+        following = get_authorized_user_ids(self.current_user)
             
-        suggestions = User.query.filter(User.id.in_(friend_ids)).limit(7)
+        suggestions = User.query.filter(~User.id.in_(following)).limit(7).all()
             
         return Response(json.dumps([sug.to_dict() for sug in suggestions]), mimetype="application/json", status=200)
     
