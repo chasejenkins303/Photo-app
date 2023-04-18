@@ -72,7 +72,16 @@ class PostDetailEndpoint(Resource):
     def patch(self, id):
         # update post based on the data posted in the body 
         post=Post.query.get(id)
+
+
+       # posts_allowed = Post.query.filter('user_id' == self.current_user.id).limit(limit)
+
         body = request.get_json()
+        # if body.get('user_id')!=self.current_user.id:
+        #     return Response(
+        #         json.dumps({'error': 'Bad id.'}), status=404
+        #     )
+        
         if body.get('image_url'):
             post.image_url=body.get('image_url')
         if body.get('caption'):
@@ -86,8 +95,14 @@ class PostDetailEndpoint(Resource):
 
 
     def delete(self, id):
-        # delete post where "id"=id
-        return Response(json.dumps({}), mimetype="application/json", status=200)
+        Post.query.filter_by(id=id).delete()
+        # body=request.get_json()
+        # if body.get('user_id')!=self.current_user.id:
+        #     return Response(
+        #         json.dumps({'error': 'Bad id.'}), status=404
+        #     )
+        db.session.commit()
+        return Response(json.dumps(None), mimetype="application/json", status=200)
 
 
     def get(self, id):

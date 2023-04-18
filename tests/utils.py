@@ -4,6 +4,9 @@ from sqlalchemy import create_engine, inspect, text
 from dotenv import load_dotenv
 load_dotenv()
 
+def get_post_that_user_cannot_edit_delete(user_id):
+    return get_post_that_user_cannot_access(user_id)
+
 def modify_system_path():
     import os, sys, inspect
     currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
