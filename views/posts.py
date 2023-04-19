@@ -2,6 +2,7 @@ from flask import Response, request
 from flask_restful import Resource
 from models import Post, Following, db
 from views import get_authorized_user_ids
+#import access_utils
 
 import json
 
@@ -73,34 +74,46 @@ class PostDetailEndpoint(Resource):
         # update post based on the data posted in the body 
         post=Post.query.get(id)
 
-
+        me_and_friends_id= get_list_of_user_ids_in_network(self.current_user.id)
        # posts_allowed = Post.query.filter('user_id' == self.current_user.id).limit(limit)
 
         body = request.get_json()
+
+        if post is None or post.user_id not in me_and_friends_id:
+            return Response(json.dumps({'error': 'Bad id'}), status=404)
         # if body.get('user_id')!=self.current_user.id:
         #     return Response(
         #         json.dumps({'error': 'Bad id.'}), status=404
         #     )
-        
-        if body.get('image_url'):
-            post.image_url=body.get('image_url')
-        if body.get('caption'):
-            post.caption=body.get('caption')
-        if body.get('alt_text'):
-            post.alt_text=body.get('alt_text')
-
-        db.session.commit()
-        print(body)       
-        return Response(json.dumps(post.to_dict()), mimetype="application/json", status=200)
+        else:
+            if body.get('image_url'):
+                post.image_url=body.get('image_url')
+            if body.get('caption'):
+                post.caption=body.get('caption')
+            if body.get('alt_text'):
+                post.alt_text=body.get('alt_text')
 
 
+            db.session.commit()
+            print(body)       
+            return Response(json.dumps(post.to_dict()), mimetype="application/json", status=200)
+
+    #@access_utils.can_modify_or_404
     def delete(self, id):
+        try:
+            id = int(id)
+        except:
+            return Response(json.dumps({'error': 'Bad id format'}), status=404)
+
+        try:
+            post=Post.query.get(id)
+        except:
+            return Response(json.dumps({'error': 'Bad id format'}), status=404)
+        if post is None:
+            return Response(json.dumps({"message": "Post not found"}), mimetype="application/json", status=404)
+        if post.user_id != self.current_user.id:
+            return Response(json.dumps({"message": "No access allowed"}), mimetype="application/json", status=404)
         Post.query.filter_by(id=id).delete()
-        # body=request.get_json()
-        # if body.get('user_id')!=self.current_user.id:
-        #     return Response(
-        #         json.dumps({'error': 'Bad id.'}), status=404
-        #     )
         db.session.commit()
         return Response(json.dumps(None), mimetype="application/json", status=200)
 
