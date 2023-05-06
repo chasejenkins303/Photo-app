@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getHeaders } from "./utils";
 
 
@@ -6,6 +6,7 @@ export default function BookmarkButton({profile, post, token, requeryPost}){
    
     let bookmarkId2
     const [bookmarkId, setBookmarkId] = useState(bookmarkId2)
+    useEffect(() =>
     async function check(){
         const response = await fetch("/api/bookmarks/", {
         method: "GET",
@@ -13,11 +14,11 @@ export default function BookmarkButton({profile, post, token, requeryPost}){
         });
         const data = await response.json();
         //console.log('bookmark list for testing',data);
-        setBookmarkId(data.find(p => p.post.id === post.id), post)
-       // console.log('return value of check', bookmarkId)
+        setBookmarkId(data.find(p => p.post.id === post.id))
+       console.log('return value of check', bookmarkId)
         //return bookmarkId
-    }
-    check()
+    },[post])
+    //check()
     //const bookmarkId=check();
     const postId= post.id;
 
