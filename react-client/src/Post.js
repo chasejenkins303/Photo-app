@@ -5,8 +5,9 @@ import { useState } from 'react';
 import BookmarkButton from './BookmarkButton'
 import AddComment from './AddComment';
 
-export default function Post({post, token}) { 
+export default function Post({profile, post, token}) { 
 
+    //console.log('profile post', profile)
     const [actualPost, setActualPost] = useState(post)
 
     async function requeryPost(post){
@@ -15,7 +16,7 @@ export default function Post({post, token}) {
         headers: getHeaders(token)
     });
     const data = await response.json();
-    console.log(data);
+    //console.log(data);
     setActualPost(data);
     //to make screen redraw, after requery, need state variable
     }
@@ -31,7 +32,7 @@ export default function Post({post, token}) {
                 <img aria-label='post' className="post" src={post.image_url}/>
                 <div className="post-bar-bottom">
                     <section className="bottom-icons">
-                            <LikeButton post={actualPost} token={token} requeryPost={requeryPost}></LikeButton>
+                            <LikeButton profile={profile} post={actualPost} token={token} requeryPost={requeryPost}></LikeButton>
                         <button>
                             <i className="far fa-comment"></i>
                         </button>
@@ -40,7 +41,7 @@ export default function Post({post, token}) {
                         </button>
                     </section>
                         {/* ${isBookmarked(post)} */}
-                        <BookmarkButton post={actualPost} token={token} requeryPost={requeryPost}></BookmarkButton>
+                        <BookmarkButton profile={profile} post={actualPost} token={token} requeryPost={requeryPost}></BookmarkButton>
                 </div>
                 <div className="comment-section">
                     <p className="like-count">{actualPost.likes.length} likes</p>

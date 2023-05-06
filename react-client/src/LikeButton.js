@@ -1,18 +1,25 @@
 import { getHeaders } from "./utils";
 
 
-export default function LikeButton({post, token, requeryPost}){
+export default function LikeButton({profile, post, token, requeryPost}){
    
-    const likeId=post.current_user_like_id;
+    if(!profile){
+        return ''
+    }
+
+    //console.log('profile like', profile.id)
+    //const likeId=post.current_user_like_id;
+    const likeId = post.likes.find((o)=>o.user_id === profile.id)
+    //const likeId = likeInit.id
     const postId= post.id;
 
     async function likeUnlike(){
 
 
-        console.log(likeId, postId)
+        //console.log('likeId, postID', likeId.id, postId)
         if(likeId){
             console.log('unlike')
-            const response = await fetch(`/api/posts/likes/${likeId}`, {
+            const response = await fetch(`/api/posts/likes/${likeId.id}`, {
                 method: "DELETE",
                 headers: getHeaders(token)
             });

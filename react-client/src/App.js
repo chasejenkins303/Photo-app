@@ -8,7 +8,6 @@ import Posts from './Posts';
 import Stories from './Stories';
 
 export default function App ({token}) { 
-    console.log('access token:', token);
 
     const [profile, setProfile] = useState(null);
     useEffect(() => {
@@ -46,15 +45,15 @@ export default function App ({token}) {
 
                 <hr/>
                 {/* Posts */}
-                <Posts token={token}/>
+                <Posts profile={profile} token={token}/>
                 
             </section>
 
             
 
-            <section className='main-feed'>
+            {/* <section className='main-feed'>
                 <Posts token={token}/>
-            </section>
+            </section> */}
             </main>
 
         </div>

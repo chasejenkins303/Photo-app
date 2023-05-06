@@ -13,7 +13,8 @@ export default function Stories({profile, token}){
             });
             const data = await response.json();
             setActualStory(data)
-            console.log('Stories', data)
+            console.log('Storiessss', data)
+            console.log('story token', token)
         }
         fetchStories();
     }, [token]);

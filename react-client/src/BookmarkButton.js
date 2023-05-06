@@ -1,23 +1,38 @@
+import { useState } from "react";
 import { getHeaders } from "./utils";
 
 
-export default function LikeButton({post, token, requeryPost}){
+export default function BookmarkButton({profile, post, token, requeryPost}){
    
-    const bookmarkId=post.current_user_bookmark_id;
+    let bookmarkId2
+    const [bookmarkId, setBookmarkId] = useState(bookmarkId2)
+    async function check(){
+        const response = await fetch("/api/bookmarks/", {
+        method: "GET",
+        headers: getHeaders(token),
+        });
+        const data = await response.json();
+        //console.log('bookmark list for testing',data);
+        setBookmarkId(data.find(p => p.post.id === post.id), post)
+       // console.log('return value of check', bookmarkId)
+        //return bookmarkId
+    }
+    check()
+    //const bookmarkId=check();
     const postId= post.id;
 
     async function bookUnbook(){
+        //check()
 
-
-        console.log(bookmarkId, postId)
+       // console.log('bookmark and post id', bookmarkId, postId)
         if(bookmarkId){
             console.log('unbookmark')
-            const response = await fetch(`/api/bookmarks/${bookmarkId}`, {
+            const response = await fetch(`/api/bookmarks/${bookmarkId.id}`, {
                 method: "DELETE",
                 headers: getHeaders(token)
             });
             const data = await response.json();
-            console.log(data);
+            //console.log(data);
             requeryPost()
         }
         
@@ -32,12 +47,14 @@ export default function LikeButton({post, token, requeryPost}){
                 body: JSON.stringify(postData)
          });
         const data = await response.json();
-        console.log(data);
+        //console.log(data);
         requeryPost();
     }
-
+    console.log('end of function check for bookmark', bookmarkId)
 
     }
+
+    //console.log('final check', bookmarkId)
    
     return(
         <button className="bookmark" onClick={bookUnbook} role='switch' aria-checked={bookmarkId ? 'true' : 'false'}>{bookmarkId ? <i id="bookmarked" className="fas fa-bookmark"></i> : <i id="notBookmarked" className="far fa-bookmark"></i>}</button>

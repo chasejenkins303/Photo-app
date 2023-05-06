@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 import {getHeaders} from './utils';
 import Post from './Post';
 
-export default function Posts({token}) { 
+export default function Posts({profile, token}) { 
 
+    // console.log('profile posts', profile)
     const [posts, setPosts]=useState([])
 
     useEffect(() => {
@@ -32,7 +33,7 @@ export default function Posts({token}) {
             {
             posts.map(post => {
                 return (
-                    <Post key={post.id} post={post} token={token}/>
+                    <Post profile={profile} key={post.id} post={post} token={token}/>
                 )
             })
         }
